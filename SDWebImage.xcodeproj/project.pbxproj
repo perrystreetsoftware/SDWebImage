@@ -856,6 +856,13 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		079F9EC518CFD44B00098A9D /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = SDWebImage;
+			};
+			name = Distribution;
+		};
 		07D8D27817DB08BE004CC92A /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1187,6 +1194,7 @@
 			buildConfigurations = (
 				537D95BF17ECC1FE0097C263 /* Debug */,
 				537D95C017ECC1FE0097C263 /* Release */,
+				079F9EC518CFD44B00098A9D /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
