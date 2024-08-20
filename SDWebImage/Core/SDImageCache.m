@@ -535,6 +535,7 @@ static NSString * _defaultDiskCacheDirectory;
         return nil;
     }
     UIImage *image = SDImageCacheDecodeImageData(data, key, [[self class] imageOptionsFromCacheOptions:options], context);
+    NSLog(@"@@ SDImageCache: diskImageForKey %@", key);
     [self _unarchiveObjectWithImage:image forKey:key];
     return image;
 }
