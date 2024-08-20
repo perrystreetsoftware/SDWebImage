@@ -244,6 +244,7 @@ static NSString * _defaultDiskCacheDirectory;
         if (completionBlock) {
             completionBlock();
         }
+        NSLog(@"@@ SDImageCache: will return, won't store image, no image no image data, no key %@", key);
         return;
     }
     BOOL toMemory = cacheType == SDImageCacheTypeMemory || cacheType == SDImageCacheTypeAll;
@@ -252,12 +253,14 @@ static NSString * _defaultDiskCacheDirectory;
     if (image && toMemory && self.config.shouldCacheImagesInMemory) {
         NSUInteger cost = image.sd_memoryCost;
         [self.memoryCache setObject:image forKey:key cost:cost];
+        NSLog(@"@@ SDImageCache: memory %@", key);
     }
     
     if (!toDisk) {
         if (completionBlock) {
             completionBlock();
         }
+        NSLog(@"@@ SDImageCache: ended up in !toDisk %@", key);
         return;
     }
     NSData *data = imageData;
@@ -281,6 +284,7 @@ static NSString * _defaultDiskCacheDirectory;
             }
             NSData *encodedData = [[SDImageCodersManager sharedManager] encodedDataWithImage:image format:format options:context[SDWebImageContextImageEncodeOptions]];
             dispatch_async(self.ioQueue, ^{
+                NSLog(@"@@ SDImageCache: disk %@", key);
                 [self _storeImageDataToDisk:encodedData forKey:key];
                 [self _archivedDataWithImage:image forKey:key];
                 if (completionBlock) {
@@ -292,6 +296,7 @@ static NSString * _defaultDiskCacheDirectory;
         });
     } else {
         dispatch_async(self.ioQueue, ^{
+            NSLog(@"@@ SDImageCache: disk2 - no data %@", key);
             [self _storeImageDataToDisk:data forKey:key];
             [self _archivedDataWithImage:image forKey:key];
             if (completionBlock) {
