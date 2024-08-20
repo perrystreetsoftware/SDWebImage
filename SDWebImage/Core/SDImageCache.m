@@ -253,7 +253,10 @@ static NSString * _defaultDiskCacheDirectory;
     if (image && toMemory && self.config.shouldCacheImagesInMemory) {
         NSUInteger cost = image.sd_memoryCost;
         [self.memoryCache setObject:image forKey:key cost:cost];
+        
+        UIImage *newImage = [self.memoryCache objectForKey:key];
         NSLog(@"@@ SDImageCache: memory %@", key);
+        NSAssert(newImage != nil, @"Image is nil, when it should get something from cache");
     }
     
     if (!toDisk) {
@@ -302,6 +305,8 @@ static NSString * _defaultDiskCacheDirectory;
             NSLog(@"@@ SDImageCache: will store data for key %@", key);
             [self _storeImageDataToDisk:data forKey:key];
             [self _archivedDataWithImage:image forKey:key];
+            UIImage *newImage = [self.memoryCache objectForKey:key];
+            NSAssert(newImage != nil, @"Image is nil, when it should get something from cache");
             if (completionBlock) {
                 [(queue ?: SDCallbackQueue.mainQueue) async:^{
                     NSLog(@"@@ SDImageCache: executed completion block for %@", key);
