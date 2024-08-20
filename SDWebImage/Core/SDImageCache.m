@@ -296,11 +296,15 @@ static NSString * _defaultDiskCacheDirectory;
         });
     } else {
         dispatch_async(self.ioQueue, ^{
-            NSLog(@"@@ SDImageCache: disk2 - no data %@", key);
+            NSLog(@"@@ SDImageCache: else condition %@", key);
+            NSLog(@"@@ SDImageCache: image is %@", image);
+            NSLog(@"@@ SDImageCache: data is %@", data);
+            NSLog(@"@@ SDImageCache: will store data for key %@", key);
             [self _storeImageDataToDisk:data forKey:key];
             [self _archivedDataWithImage:image forKey:key];
             if (completionBlock) {
                 [(queue ?: SDCallbackQueue.mainQueue) async:^{
+                    NSLog(@"@@ SDImageCache: executed completion block for %@", key);
                     completionBlock();
                 }];
             }
@@ -350,10 +354,12 @@ static NSString * _defaultDiskCacheDirectory;
 - (void)storeImageDataToDisk:(nullable NSData *)imageData
                       forKey:(nullable NSString *)key {
     if (!imageData || !key) {
+        NSLog(@"@@ SDImageCache: storeImageDataToDisk -- will return, no image data or key %@", key);
         return;
     }
     
     dispatch_sync(self.ioQueue, ^{
+        NSLog(@"@@ SDImageCache: storeImageDataToDisk -- will store image data to disk %@", key);
         [self _storeImageDataToDisk:imageData forKey:key];
     });
 }
